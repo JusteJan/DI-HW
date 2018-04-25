@@ -1,10 +1,9 @@
 nfq_weather:
-# TODO: Uncomment the following once Configuration.php is implemented
-#    provider: delegating
-#    providers:
-#        openweathermap:
-#            api_key: 'secretapikey'
-#        delegating:
-#            providers:
-#                - yahoo
-#                - openweathermap
+    provider: openweathermap
+    providers:
+        openweathermap:
+            api_key: '7bf471179d2772ee60ecd68ede58ff8f'
+        delegating:
+            providers:
+                - yahoo
+                - openweathermap

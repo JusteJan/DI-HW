@@ -27,8 +27,7 @@ class OpenWeatherMapWeatherProvider implements WeatherProviderInterface
 
         $temperature = $this->parseData($data);
 
-        $weather = new Weather();
-        $weather->setTemperature($temperature);
+        $weather = new Weather($temperature);
 
         return $weather;
     }
