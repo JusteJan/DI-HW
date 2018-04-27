@@ -1,5 +1,5 @@
 nfq_weather:
-    provider: openweathermap
+    provider: delegating
     providers:
         openweathermap:
             api_key: '7bf471179d2772ee60ecd68ede58ff8f'

@@ -14,8 +14,7 @@ class Configuration implements ConfigurationInterface
 
         $rootNode
             ->children()
-                ->enumNode('provider')
-                    ->values(['delegating', 'yahoo', 'openweathermap'])
+                ->scalarNode('provider')
                     ->defaultValue('delegating')
                 ->end()
                 ->arrayNode('providers')
@@ -31,8 +30,7 @@ class Configuration implements ConfigurationInterface
                         ->arrayNode('delegating')
                             ->children()
                                 ->arrayNode('providers')
-                                    ->enumPrototype()
-                                        ->values(['yahoo', 'openweathermap'])
+                                    ->scalarPrototype()
                                     ->end()
                                     ->defaultValue(['yahoo', 'openweathermap'])
                                 ->end()
