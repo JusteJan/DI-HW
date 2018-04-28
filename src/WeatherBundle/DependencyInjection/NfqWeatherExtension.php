@@ -7,6 +7,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Nfq\WeatherBundle\WeatherProviderInterface;
+use Symfony\Component\DependencyInjection\Reference;
 
 class NfqWeatherExtension extends Extension
 {
@@ -22,25 +23,20 @@ class NfqWeatherExtension extends Extension
 
         $apiKey = $config['providers']['openweathermap']['api_key'];
 
-        if (isset($apiKey)) {
-            $openweather = $container->getDefinition('nfq_weather.provider.openweathermap');
-            $openweather->replaceArgument(0, $apiKey);
-        }
+        $openweather = $container->getDefinition('nfq_weather.provider.openweathermap');
+        $openweather->replaceArgument(0, $apiKey);
+
 
         $providerList = $config['providers']['delegating']['providers'];
 
-        if (isset($providerList)) {
-            $providers = [];
+        $providers = [];
 
-            $delegating = $container->getDefinition('nfq_weather.provider.delegating');
+        $delegating = $container->getDefinition('nfq_weather.provider.delegating');
 
-            foreach($config['providers']['delegating']['providers'] as $provider) {
-                $providers[] = $container->getDefinition('nfq_weather.provider.' . $provider);
+        foreach($providerList as $provider) {
+            $providers[] = new Reference('nfq_weather.provider.' . $provider);
             }
 
-            $delegating->replaceArgument(0, $providers);
-
-        }
-
+        $delegating->replaceArgument(0, $providers);
     }
 }
