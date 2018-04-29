@@ -21,22 +21,21 @@ class NfqWeatherExtension extends Extension
 
         $container->setAlias(WeatherProviderInterface::class, 'nfq_weather.provider.' . $config['provider']);
 
-        $apiKey = $config['providers']['openweathermap']['api_key'];
+        if (isset($config['providers']['openweathermap']['api_key'])) {
+            $openweather = $container->getDefinition('nfq_weather.provider.openweathermap');
+            $openweather->replaceArgument(0, $config['providers']['openweathermap']['api_key']);
+        }
 
-        $openweather = $container->getDefinition('nfq_weather.provider.openweathermap');
-        $openweather->replaceArgument(0, $apiKey);
+        if (isset($config['providers']['delegating']['providers'])) {
+            $providers = [];
+            $delegating = $container->getDefinition('nfq_weather.provider.delegating');
 
-
-        $providerList = $config['providers']['delegating']['providers'];
-
-        $providers = [];
-
-        $delegating = $container->getDefinition('nfq_weather.provider.delegating');
-
-        foreach($providerList as $provider) {
-            $providers[] = new Reference('nfq_weather.provider.' . $provider);
+            foreach($config['providers']['delegating']['providers'] as $provider) {
+                $providers[] = new Reference('nfq_weather.provider.' . $provider);
             }
 
-        $delegating->replaceArgument(0, $providers);
+            $delegating->replaceArgument(0, $providers);
+        }
+
     }
 }
